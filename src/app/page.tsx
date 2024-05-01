@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { db } from "~/server/db";
+export const dynamic = "force-dynamic"; // to force dynamic because we want to make sure every time a change is made in our database thsi page's content is updated on the next visit
 
 const mockUrls = [
   "https://utfs.io/f/b600cbcc-b447-42f2-9362-7340ffb66073-21qsq.jpg",
