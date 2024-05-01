@@ -1,30 +1,18 @@
 import { db } from "~/server/db";
 export const dynamic = "force-dynamic"; // to force dynamic because we want to make sure every time a change is made in our database thsi page's content is updated on the next visit
 
-const mockUrls = [
-  "https://utfs.io/f/b600cbcc-b447-42f2-9362-7340ffb66073-21qsq.jpg",
-  "https://utfs.io/f/e3cd3648-477c-49b2-af4e-3403b5302e8c-21qsp.jpg",
-  "https://utfs.io/f/f84c1e5e-9495-43be-93ae-568f86867f5e-21qso.jpg",
-  "https://utfs.io/f/d9a277df-293c-4363-a05b-e98521c9db9b-21qsn.jpg",
-];
-
-const mockImages = mockUrls.map((url, index) => ({
-  id: index + 1,
-  url,
-}));
-
 export default async function HomePage() {
-  const posts = await db.query.posts.findMany();
-  console.log(posts);
+  const images = await db.query.images.findMany({
+    orderBy: (model, { desc }) => desc(model.id),
+  });
+
   return (
     <main className="">
       <div className="flex flex-wrap gap-4">
-        {posts.map((post) => (
-          <div key={post.id}>{post.name}</div>
-        ))}
-        {[...mockImages, ...mockImages, ...mockImages].map((image, index) => (
-          <div key={image.id + "-" + index} className="w-48">
+        {[...images, ...images, ...images].map((image, index) => (
+          <div key={image.id + "-" + index} className="flex w-48 flex-col">
             <img src={image.url} alt="" />
+            <div>{image.name}</div>
           </div>
         ))}
       </div>
