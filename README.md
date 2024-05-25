@@ -16,5 +16,12 @@
 - [x] Update upload button to be less cringe
 - [x] ShadUIify (specifcally toasts)
 - [x] Analytivs (posthog)
-- [] Delete button (w/ Server Actions)
-- [] Ratelimitting (upstash)
+- [x] Delete button (w/ Server Actions)
+- [x] Ratelimitting (upstash)
+
+## A challenge
+
+- Fix the page layout for images og different resolutions
+- "Selecting" images on the gallery page
+- "infinite scroll"
+- Folders/albums
