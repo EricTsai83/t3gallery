@@ -1,4 +1,3 @@
-// app/providers.js
 "use client";
 import { useAuth, useUser } from "@clerk/nextjs";
 import posthog from "posthog-js";
@@ -27,11 +26,12 @@ function PoatHogAuthWrapper({ children }: { children: React.ReactNode }) {
     if (userInfo.user) {
       posthog.identify(userInfo.user.id, {
         email: userInfo.user.emailAddresses[0]?.emailAddress,
+        name: userInfo.user.fullName,
       });
     } else if (!auth.isSignedIn) {
       posthog.reset();
     }
-  }, [auth]);
+  }, [auth, userInfo]);
 
   return children;
 }
