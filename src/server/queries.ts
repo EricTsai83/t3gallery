@@ -5,6 +5,7 @@ import { images } from "./db/schema";
 import { and, eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
 import analyticsServerClient from "./analytics";
+import { getBase64 } from "~/lib/utils";
 
 export async function getMyImages() {
   const user = auth();
@@ -16,7 +17,17 @@ export async function getMyImages() {
     orderBy: (model, { desc }) => desc(model.id),
   });
 
-  return images;
+  const imagesWithBlurData = await Promise.all(
+    images.map(async (image) => {
+      const blurData = await getBase64(image.url);
+      return {
+        ...image,
+        blurData,
+      };
+    }),
+  );
+
+  return imagesWithBlurData;
 }
 
 export async function getImage(id: number) {
@@ -30,8 +41,12 @@ export async function getImage(id: number) {
   if (!image) throw new Error("Image not found");
 
   if (image.userId !== user.userId) throw new Error("Unauthorized");
-
-  return image;
+  const blurData = await getBase64(image.url);
+  const imageWithBlurData = {
+    ...image,
+    blurData,
+  };
+  return imageWithBlurData;
 }
 
 export async function deleteImage(id: number) {
